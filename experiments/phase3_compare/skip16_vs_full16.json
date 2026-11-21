@@ -1,0 +1,42 @@
+{
+  "seconds": 5543,
+  "object_f1": 0.99988,
+  "object_tp_fp_fn": [
+    4081,
+    1,
+    0
+  ],
+  "people_exact": 0.99964,
+  "people_within1": 1.0,
+  "missing_seconds": 0,
+  "extra_seconds": 0,
+  "worst_videos_people_exact": [
+    {
+      "video": "train-00016-of-01357.parquet:1",
+      "exact": 0.9833,
+      "seconds": 60
+    },
+    {
+      "video": "train-00032-of-01357.parquet:5",
+      "exact": 0.9833,
+      "seconds": 60
+    },
+    {
+      "video": "train-00000-of-01357.parquet:0",
+      "exact": 1.0,
+      "seconds": 60
+    },
+    {
+      "video": "train-00000-of-01357.parquet:1",
+      "exact": 1.0,
+      "seconds": 60
+    },
+    {
+      "video": "train-00000-of-01357.parquet:2",
+      "exact": 1.0,
+      "seconds": 60
+    }
+  ],
+  "error_videos_ref": 0,
+  "error_videos_pred": 0
+}

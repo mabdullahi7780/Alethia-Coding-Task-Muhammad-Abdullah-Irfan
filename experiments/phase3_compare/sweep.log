@@ -1,0 +1,24 @@
+5543 seconds, 154100 frames, 96 videos
+dump reproduces the full-mode output on 5541/5543 seconds
+
+full mode cost: 27.8 frames per video-second
+settings meeting f1>=0.97, exact>=0.9, w1>=0.97: 90 of 90; cheapest 15:
+K  hi  lo  margin  people_rule  cost  escalated  f1  exact  w1  exact_p5  trig_margin  trig_people  trig_presence
+3  0.6  0.4  off  majority  3.72  0.029  0.989  0.9729  0.9986  0.8964  0  160  0
+5  0.6  0.4  off  majority  5.78  0.034  0.9924  0.9823  0.9995  0.9167  0  189  0
+4  0.6  0.4  off  majority  6.51  0.105  0.9977  0.9931  1.0  0.9667  0  502  238
+3  0.6  0.4  0.35-0.45  majority  7.36  0.175  0.9952  0.9919  1.0  0.9667  944  160  0
+3  0.6  0.4  off  all-equal  7.41  0.176  0.9957  0.9984  1.0  0.9833  0  975  0
+6  0.6  0.4  off  majority  7.89  0.086  0.9985  0.9957  1.0  0.9702  0  422  156
+3  1.0  0.0  off  all-equal  8.29  0.211  0.9998  0.9986  1.0  0.9833  0  975  645
+3  1.0  0.0  off  majority  8.29  0.211  0.9998  0.9986  1.0  0.9833  0  975  645
+3  0.8  0.2  off  all-equal  8.29  0.211  0.9998  0.9986  1.0  0.9833  0  975  645
+3  0.8  0.2  off  majority  8.29  0.211  0.9998  0.9986  1.0  0.9833  0  975  645
+5  0.8  0.2  off  majority  8.43  0.149  0.9994  0.9995  1.0  1.0  0  701  384
+3  0.6  0.4  0.30-0.50  majority  8.97  0.24  0.9972  0.9953  1.0  0.9764  1322  160  0
+3  0.6  0.4  0.35-0.45  all-equal  9.08  0.243  0.9984  0.9998  1.0  1.0  944  975  0
+4  0.6  0.4  off  all-equal  9.13  0.213  0.999  0.9996  1.0  1.0  0  1122  238
+4  0.6  0.4  0.35-0.45  majority  9.2  0.217  0.9989  0.9987  1.0  0.9833  1028  502  238
+
+current default (K=5, 0.8/0.2, margin 0.30-0.50, all-equal):
+{"K": 5, "hi": 0.8, "lo": 0.2, "margin": "0.30-0.50", "people_rule": "all-equal", "cost": 12.53, "escalated": 0.329, "f1": 1.0, "exact": 1.0, "w1": 1.0, "exact_p5": 1.0, "trig_margin": 1518, "trig_people": 1179, "trig_presence": 384}

@@ -1,0 +1,16 @@
+[04:49:16] mode=skip devices=['cuda:0', 'cuda:1'] workers=2 batch=32 files=12 samples=5 hi=0.8 lo=0.2 margin=(0.3, 0.5)
+[04:49:21] gpu0 ready on cuda:0
+[04:49:22] gpu1 ready on cuda:1
+[04:50:22] gpu0      60s | videos 8 | video-seconds 497 (8.3/s) | frames inferred 5677 (95/s) | escalated 148/497 | idle 3s | infer 53s
+[04:50:22] gpu1      60s | videos 8 | video-seconds 481 (8.0/s) | frames inferred 5241 (87/s) | escalated 127/483 | idle 5s | infer 51s
+[04:51:22] gpu0     120s | videos 17 | video-seconds 1009 (8.4/s) | frames inferred 11953 (99/s) | escalated 311/1011 | idle 8s | infer 107s
+[04:51:22] gpu1     120s | videos 18 | video-seconds 1030 (8.6/s) | frames inferred 11172 (93/s) | escalated 256/1030 | idle 12s | infer 103s
+[04:52:22] gpu0     180s | videos 26 | video-seconds 1483 (8.2/s) | frames inferred 18683 (104/s) | escalated 505/1482 | idle 11s | infer 162s
+[04:52:22] gpu1     180s | videos 26 | video-seconds 1557 (8.6/s) | frames inferred 17227 (96/s) | escalated 405/1557 | idle 18s | infer 155s
+[04:53:22] gpu1     240s | videos 35 | video-seconds 2076 (8.6/s) | frames inferred 23178 (96/s) | escalated 540/2076 | idle 25s | infer 207s
+[04:53:22] gpu0     240s | videos 34 | video-seconds 1968 (8.2/s) | frames inferred 25464 (106/s) | escalated 711/1970 | idle 15s | infer 217s
+[04:54:22] gpu1     300s | videos 42 | video-seconds 2471 (8.2/s) | frames inferred 29502 (98/s) | escalated 736/2473 | idle 28s | infer 262s
+[04:54:22] gpu0     301s | videos 43 | video-seconds 2504 (8.3/s) | frames inferred 32218 (107/s) | escalated 888/2505 | idle 18s | infer 272s
+[04:54:59] gpu0 FINAL     337s | videos 48 | video-seconds 2763 (8.2/s) | frames inferred 36091 (107/s) | escalated 996/2762 | idle 20s | infer 304s
+[04:54:59] gpu1 FINAL     337s | videos 48 | video-seconds 2780 (8.2/s) | frames inferred 33336 (99/s) | escalated 826/2780 | idle 31s | infer 296s
+[04:55:00] done: 5543 lines in 345.3s -> /kaggle/working/compare/skip16.jsonl

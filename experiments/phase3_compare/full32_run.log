@@ -1,0 +1,60 @@
+[04:10:24] mode=full devices=['cuda:0', 'cuda:1'] workers=2 batch=32 files=12
+[04:10:38] gpu1 ready on cuda:1
+[04:10:38] gpu0 ready on cuda:0
+[04:11:38] gpu1      60s | videos 1 | video-seconds 97 (1.6/s) | frames inferred 2910 (48/s) | escalated 0/0 | idle 0s | infer 57s
+[04:11:38] gpu0      60s | videos 1 | video-seconds 122 (2.0/s) | frames inferred 3026 (50/s) | escalated 0/0 | idle 0s | infer 57s
+[04:12:38] gpu1     121s | videos 2 | video-seconds 184 (1.5/s) | frames inferred 5325 (44/s) | escalated 0/0 | idle 0s | infer 116s
+[04:12:39] gpu0     121s | videos 3 | video-seconds 234 (1.9/s) | frames inferred 6059 (50/s) | escalated 0/0 | idle 0s | infer 117s
+[04:13:38] gpu1     181s | videos 4 | video-seconds 289 (1.6/s) | frames inferred 7994 (44/s) | escalated 0/0 | idle 0s | infer 176s
+[04:13:39] gpu0     181s | videos 5 | video-seconds 341 (1.9/s) | frames inferred 9088 (50/s) | escalated 0/0 | idle 0s | infer 177s
+[04:14:39] gpu1     241s | videos 6 | video-seconds 372 (1.5/s) | frames inferred 10495 (43/s) | escalated 0/0 | idle 0s | infer 236s
+[04:14:39] gpu0     241s | videos 7 | video-seconds 444 (1.8/s) | frames inferred 12140 (50/s) | escalated 0/0 | idle 0s | infer 236s
+[04:15:39] gpu1     302s | videos 7 | video-seconds 484 (1.6/s) | frames inferred 13355 (44/s) | escalated 0/0 | idle 0s | infer 295s
+[04:15:40] gpu0     302s | videos 9 | video-seconds 565 (1.9/s) | frames inferred 15049 (50/s) | escalated 0/0 | idle 0s | infer 296s
+[04:16:40] gpu1     362s | videos 9 | video-seconds 582 (1.6/s) | frames inferred 16114 (44/s) | escalated 0/0 | idle 0s | infer 355s
+[04:16:40] gpu0     362s | videos 11 | video-seconds 683 (1.9/s) | frames inferred 17938 (50/s) | escalated 0/0 | idle 0s | infer 355s
+[04:17:40] gpu1     422s | videos 11 | video-seconds 684 (1.6/s) | frames inferred 18846 (45/s) | escalated 0/0 | idle 0s | infer 415s
+[04:17:40] gpu0     423s | videos 12 | video-seconds 775 (1.8/s) | frames inferred 20422 (48/s) | escalated 0/0 | idle 0s | infer 415s
+[04:18:41] gpu0     483s | videos 14 | video-seconds 874 (1.8/s) | frames inferred 23311 (48/s) | escalated 0/0 | idle 0s | infer 475s
+[04:18:41] gpu1     483s | videos 12 | video-seconds 776 (1.6/s) | frames inferred 21605 (45/s) | escalated 0/0 | idle 0s | infer 475s
+[04:19:41] gpu1     543s | videos 14 | video-seconds 867 (1.6/s) | frames inferred 24334 (45/s) | escalated 0/0 | idle 0s | infer 534s
+[04:19:41] gpu0     543s | videos 16 | video-seconds 982 (1.8/s) | frames inferred 26331 (48/s) | escalated 0/0 | idle 0s | infer 534s
+[04:20:41] gpu0     604s | videos 17 | video-seconds 1083 (1.8/s) | frames inferred 29360 (49/s) | escalated 0/0 | idle 0s | infer 594s
+[04:20:41] gpu1     604s | videos 16 | video-seconds 969 (1.6/s) | frames inferred 27033 (45/s) | escalated 0/0 | idle 0s | infer 594s
+[04:21:42] gpu1     664s | videos 17 | video-seconds 1066 (1.6/s) | frames inferred 29737 (45/s) | escalated 0/0 | idle 0s | infer 654s
+[04:21:42] gpu0     664s | videos 19 | video-seconds 1194 (1.8/s) | frames inferred 32328 (49/s) | escalated 0/0 | idle 0s | infer 653s
+[04:22:42] gpu1     724s | videos 19 | video-seconds 1160 (1.6/s) | frames inferred 32461 (45/s) | escalated 0/0 | idle 0s | infer 714s
+[04:22:42] gpu0     724s | videos 21 | video-seconds 1298 (1.8/s) | frames inferred 35347 (49/s) | escalated 0/0 | idle 0s | infer 713s
+[04:23:42] gpu1     785s | videos 20 | video-seconds 1252 (1.6/s) | frames inferred 35220 (45/s) | escalated 0/0 | idle 0s | infer 773s
+[04:23:43] gpu0     785s | videos 23 | video-seconds 1405 (1.8/s) | frames inferred 38356 (49/s) | escalated 0/0 | idle 0s | infer 773s
+[04:24:43] gpu0     845s | videos 24 | video-seconds 1506 (1.8/s) | frames inferred 41384 (49/s) | escalated 0/0 | idle 0s | infer 832s
+[04:24:43] gpu1     845s | videos 22 | video-seconds 1355 (1.6/s) | frames inferred 37949 (45/s) | escalated 0/0 | idle 0s | infer 833s
+[04:25:43] gpu0     905s | videos 27 | video-seconds 1619 (1.8/s) | frames inferred 44480 (49/s) | escalated 0/0 | idle 0s | infer 892s
+[04:25:43] gpu1     905s | videos 24 | video-seconds 1459 (1.6/s) | frames inferred 40708 (45/s) | escalated 0/0 | idle 0s | infer 893s
+[04:26:43] gpu0     965s | videos 29 | video-seconds 1720 (1.8/s) | frames inferred 47509 (49/s) | escalated 0/0 | idle 0s | infer 952s
+[04:26:43] gpu1     966s | videos 25 | video-seconds 1554 (1.6/s) | frames inferred 43444 (45/s) | escalated 0/0 | idle 0s | infer 953s
+[04:27:44] gpu1    1026s | videos 28 | video-seconds 1668 (1.6/s) | frames inferred 46131 (45/s) | escalated 0/0 | idle 0s | infer 1012s
+[04:27:44] gpu0    1026s | videos 30 | video-seconds 1823 (1.8/s) | frames inferred 50579 (49/s) | escalated 0/0 | idle 0s | infer 1011s
+[04:28:44] gpu1    1086s | videos 30 | video-seconds 1783 (1.6/s) | frames inferred 48865 (45/s) | escalated 0/0 | idle 0s | infer 1072s
+[04:28:44] gpu0    1087s | videos 32 | video-seconds 1925 (1.8/s) | frames inferred 53634 (49/s) | escalated 0/0 | idle 0s | infer 1071s
+[04:29:45] gpu0    1147s | videos 34 | video-seconds 2026 (1.8/s) | frames inferred 56664 (49/s) | escalated 0/0 | idle 0s | infer 1131s
+[04:29:45] gpu1    1147s | videos 32 | video-seconds 1876 (1.6/s) | frames inferred 51638 (45/s) | escalated 0/0 | idle 0s | infer 1132s
+[04:30:45] gpu0    1207s | videos 35 | video-seconds 2127 (1.8/s) | frames inferred 59692 (49/s) | escalated 0/0 | idle 0s | infer 1190s
+[04:30:45] gpu1    1207s | videos 33 | video-seconds 1978 (1.6/s) | frames inferred 54345 (45/s) | escalated 0/0 | idle 0s | infer 1192s
+[04:31:45] gpu0    1267s | videos 37 | video-seconds 2237 (1.8/s) | frames inferred 62691 (49/s) | escalated 0/0 | idle 0s | infer 1250s
+[04:31:45] gpu1    1268s | videos 36 | video-seconds 2080 (1.6/s) | frames inferred 57051 (45/s) | escalated 0/0 | idle 0s | infer 1251s
+[04:32:45] gpu0    1327s | videos 39 | video-seconds 2347 (1.8/s) | frames inferred 65750 (50/s) | escalated 0/0 | idle 0s | infer 1309s
+[04:32:46] gpu1    1328s | videos 36 | video-seconds 2181 (1.6/s) | frames inferred 59794 (45/s) | escalated 0/0 | idle 0s | infer 1311s
+[04:33:45] gpu0    1388s | videos 42 | video-seconds 2466 (1.8/s) | frames inferred 68821 (50/s) | escalated 0/0 | idle 0s | infer 1369s
+[04:33:46] gpu1    1389s | videos 38 | video-seconds 2279 (1.6/s) | frames inferred 62506 (45/s) | escalated 0/0 | idle 0s | infer 1371s
+[04:34:45] gpu0    1448s | videos 43 | video-seconds 2566 (1.8/s) | frames inferred 71842 (50/s) | escalated 0/0 | idle 0s | infer 1428s
+[04:34:47] gpu1    1449s | videos 40 | video-seconds 2387 (1.6/s) | frames inferred 65168 (45/s) | escalated 0/0 | idle 0s | infer 1431s
+[04:35:46] gpu0    1508s | videos 45 | video-seconds 2667 (1.8/s) | frames inferred 74871 (50/s) | escalated 0/0 | idle 0s | infer 1488s
+[04:35:47] gpu1    1509s | videos 42 | video-seconds 2487 (1.6/s) | frames inferred 67929 (45/s) | escalated 0/0 | idle 0s | infer 1491s
+[04:36:46] gpu0    1568s | videos 46 | video-seconds 2768 (1.8/s) | frames inferred 77901 (50/s) | escalated 0/0 | idle 0s | infer 1547s
+[04:36:47] gpu1    1570s | videos 44 | video-seconds 2581 (1.6/s) | frames inferred 70753 (45/s) | escalated 0/0 | idle 0s | infer 1550s
+[04:37:46] gpu0    1629s | videos 48 | video-seconds 2879 (1.8/s) | frames inferred 80931 (50/s) | escalated 0/0 | idle 0s | infer 1607s
+[04:37:48] gpu1    1630s | videos 46 | video-seconds 2644 (1.6/s) | frames inferred 72615 (45/s) | escalated 0/0 | idle 0s | infer 1590s
+[04:37:55] gpu1 FINAL    1637s | videos 46 | video-seconds 2644 (1.6/s) | frames inferred 72615 (44/s) | escalated 0/0 | idle 0s | infer 1590s
+[04:37:57] gpu0 FINAL    1640s | videos 50 | video-seconds 2899 (1.8/s) | frames inferred 81485 (50/s) | escalated 0/0 | idle 0s | infer 1618s
+[04:37:58] done: 5543 lines in 1659.2s -> /kaggle/working/compare/full32.jsonl

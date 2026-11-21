@@ -18,3 +18,6 @@ __pycache__/
 
 # Kaggle output zips downloaded for review
 kaggle/outputs/
+
+# model weights (downloaded by prepare.py)
+yolo11l.pt

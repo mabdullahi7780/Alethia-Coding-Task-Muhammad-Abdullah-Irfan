@@ -363,9 +363,131 @@ json.dump(summary, open(f"{OUT_DIR}/summary.json", "w"), indent=2)
     ])
 
 
+# ---------------------------------------------------------------- full_run.ipynb
+SETUP_REQUIREMENTS = SETUP.replace(
+    '''# Same versions as development; Kaggle's preinstalled torch is used (version recorded in env.json).
+run([sys.executable, "-m", "pip", "install", "-q", "ultralytics==8.4.216", "av==18.1.0",
+     "huggingface_hub", "imageio-ffmpeg", "pytest"])''',
+    '''# Exactly the submitted requirements.txt (torch 2.14.1+cu126 etc.), so the results come from the
+# environment the grader installs. huggingface_hub is only for downloading the data here.
+run([sys.executable, "-m", "pip", "install", "-q", "-r", f"{REPO_DIR}/requirements.txt"])
+run([sys.executable, "-m", "pip", "install", "-q", "huggingface_hub"])''')
+assert SETUP_REQUIREMENTS != SETUP
+
+
+def full_run() -> dict:
+    return notebook([
+        md('''
+# Athletia full run: all 50 Parquet files with run.py
+
+1. installs the submitted `requirements.txt` and runs `prepare.py` (the README's preparation step)
+2. downloads `train-00000` ... `train-00049` (about 25 GB) into `/tmp`
+3. validation gate: `run.py` on the Phase 3 subset (96 videos x 60 s) scored against the committed FP32
+   every-frame reference (`experiments/phase3_compare/full32.jsonl`); stops here if accuracy is off
+4. the timed full run, exactly as the grader runs it: `python run.py --input <folder> --output results.jsonl`
+5. format check of every line, `results.jsonl.gz`, and the numbers for `HARDWARE.md`
+
+Expected: about 6 to 7 hours on GPU T4 x2.
+
+**Settings:** Accelerator GPU T4 x2, Internet on, Add-ons > Secrets > `HF_TOKEN` attached.
+Run with **Save Version, Save & Run All**. When it finishes, download `results.jsonl.gz` and
+`full_run_outputs.zip` from the version's Output tab.
+'''),
+        code('''
+OUT_DIR = "/kaggle/working/full"
+ARCHIVE_NAME = "full_run_outputs"
+'''),
+        code(SETUP_REQUIREMENTS),
+        code(ENV),
+        code(HF_TOKEN),
+        md("## Data and weights"),
+        code(r'''
+from concurrent.futures import ThreadPoolExecutor
+
+import pyarrow.parquet as pq
+from huggingface_hub import hf_hub_download
+
+FILES = [f"data/train-{i:05d}-of-01357.parquet" for i in range(50)]
+t0 = time.perf_counter()
+with ThreadPoolExecutor(8) as pool:
+    paths = list(pool.map(lambda f: hf_hub_download("HuggingFaceFV/finevideo", f, repo_type="dataset",
+                                                    local_dir=DATA_DIR), FILES))
+download_s = time.perf_counter() - t0
+INPUT = os.path.join(DATA_DIR, "data")
+names = sorted(os.listdir(INPUT))
+EXPECTED_VIDEOS = sum(pq.ParquetFile(os.path.join(INPUT, n)).metadata.num_rows for n in names)
+size_gb = sum(os.path.getsize(os.path.join(INPUT, n)) for n in names) / 2**30
+print(f"{len(names)} files, {size_gb:.1f} GiB, {EXPECTED_VIDEOS} videos, downloaded in {download_s:.0f} s")
+assert len(names) == 50, names
+run([sys.executable, "prepare.py"], log="prepare.log")
+'''),
+        md("## Validation gate (Phase 3 subset vs the FP32 every-frame reference)"),
+        code(r'''
+VAL_DIR = "/tmp/validation"
+os.makedirs(VAL_DIR, exist_ok=True)
+for i in range(0, 48, 4):
+    name = f"train-{i:05d}-of-01357.parquet"
+    if not os.path.exists(f"{VAL_DIR}/{name}"):
+        os.symlink(f"{INPUT}/{name}", f"{VAL_DIR}/{name}")
+run([sys.executable, "run.py", "--input", VAL_DIR, "--output", f"{OUT_DIR}/validation.jsonl",
+     "--videos-per-file", "8", "--max-seconds", "60"], log="validation_run.log")
+run([sys.executable, "tools/eval.py", "--ref", "experiments/phase3_compare/full32.jsonl",
+     "--pred", f"{OUT_DIR}/validation.jsonl", "--json", f"{OUT_DIR}/validation_vs_full32.json"], log="validation_eval.log")
+val = json.load(open(f"{OUT_DIR}/validation_vs_full32.json"))
+# Our own sanity margins (from the Phase 3 sweep and the FP16 run), not the brief's thresholds.
+assert val["seconds"] == 5543 and val["missing_seconds"] == 0, val
+assert val["object_f1"] >= 0.998 and val["people_exact"] >= 0.995 and val["people_within1"] >= 0.999, val
+print("validation passed")
+'''),
+        md("## The timed full run"),
+        code(r'''
+t0 = time.perf_counter()
+run([sys.executable, "run.py", "--input", INPUT, "--output", f"{OUT_DIR}/results.jsonl", "--stats-every", "300"],
+    log="full_run.log")
+full_run_s = time.perf_counter() - t0
+print(f"full run: {full_run_s:.0f} s = {full_run_s / 3600:.2f} h")
+'''),
+        md("## Checks, results.jsonl.gz, numbers for HARDWARE.md"),
+        code(r'''
+import gzip
+
+run([sys.executable, "tools/check_results.py", f"{OUT_DIR}/results.jsonl", "--expect-videos", str(EXPECTED_VIDEOS)],
+    log="results_check.log", check=False)
+with open(f"{OUT_DIR}/results.jsonl", "rb") as src, gzip.open("/kaggle/working/results.jsonl.gz", "wb") as dst:
+    shutil.copyfileobj(src, dst)
+shutil.copy("/kaggle/working/results.jsonl.gz", f"{OUT_DIR}/results.jsonl.gz")
+
+st = json.load(open(f"{OUT_DIR}/results.jsonl.stats.json"))
+gpus = list(st["gpu"].values())
+errors = [json.loads(l) for l in open(f"{OUT_DIR}/results.jsonl") if '"error"' in l]
+summary = {
+    "env": env,
+    "download_s": round(download_s), "data_gib": round(size_gb, 1), "videos": EXPECTED_VIDEOS,
+    "full_run_s": round(full_run_s), "full_run_h": round(full_run_s / 3600, 2),
+    "lines": st["lines"], "video_seconds": sum(g["seconds"] for g in gpus),
+    "frames_inferred": sum(g["frames"] for g in gpus),
+    "frames_per_video_second": round(sum(g["frames"] for g in gpus) / max(sum(g["seconds"] for g in gpus), 1), 2),
+    "escalated_seconds": sum(g["escalated_seconds"] for g in gpus), "sampled_seconds": sum(g["sampled_seconds"] for g in gpus),
+    "gpu_idle_s": [round(g["idle_s"]) for g in gpus], "gpu_infer_s": [round(g["infer_s"]) for g in gpus],
+    "error_videos": len(errors), "errors": errors[:50],
+    "validation": val,
+    "results_gz_mb": round(os.path.getsize("/kaggle/working/results.jsonl.gz") / 2**20, 1),
+}
+print(json.dumps({k: v for k, v in summary.items() if k != "errors"}, indent=2))
+json.dump(summary, open(f"{OUT_DIR}/summary.json", "w"), indent=2)
+'''),
+        code(r'''
+os.remove(f"{OUT_DIR}/results.jsonl")  # the gzip copy is kept; keeps the archive small
+archive = shutil.make_archive(f"/kaggle/working/{ARCHIVE_NAME}", "zip", OUT_DIR)
+print("Archive:", archive, os.path.getsize(archive), "bytes")
+print(sorted(os.listdir(OUT_DIR)))
+'''),
+    ])
+
+
 def main() -> None:
     KAGGLE_DIR.mkdir(parents=True, exist_ok=True)
-    for name, build in {"smoke.ipynb": smoke, "compare.ipynb": compare}.items():
+    for name, build in {"smoke.ipynb": smoke, "compare.ipynb": compare, "full_run.ipynb": full_run}.items():
         out = KAGGLE_DIR / name
         out.write_text(json.dumps(build(), indent=1) + "\n")
         print("wrote", out)

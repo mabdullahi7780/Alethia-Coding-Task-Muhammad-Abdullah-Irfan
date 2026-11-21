@@ -1,0 +1,22 @@
+{"video": "damaged-00000.parquet:1", "error": "could not decode video: InvalidDataError: [Errno 1094995529] Invalid data found when processing input: '<none>'"}
+{"video": "damaged-00000.parquet:2", "error": "empty mp4 bytes"}
+{"video": "damaged-00000.parquet:3", "second": 0, "objects": ["person"], "people": 1}
+{"video": "damaged-00000.parquet:3", "second": 1, "objects": ["person", "cell phone"], "people": 1}
+{"video": "damaged-00000.parquet:3", "second": 2, "objects": ["person"], "people": 1}
+{"video": "damaged-00000.parquet:3", "second": 3, "objects": ["person"], "people": 1}
+{"video": "damaged-00000.parquet:3", "second": 4, "objects": [], "people": 0}
+{"video": "damaged-00000.parquet:3", "second": 5, "objects": [], "people": 0}
+{"video": "damaged-00000.parquet:3", "second": 6, "objects": ["person"], "people": 1}
+{"video": "damaged-00000.parquet:3", "second": 7, "objects": ["person"], "people": 1}
+{"video": "damaged-00000.parquet:3", "second": 8, "objects": ["person"], "people": 1}
+{"video": "damaged-00000.parquet:3", "second": 9, "objects": [], "people": 0}
+{"video": "damaged-00000.parquet:0", "second": 0, "objects": [], "people": 0}
+{"video": "damaged-00000.parquet:0", "second": 1, "objects": [], "people": 0}
+{"video": "damaged-00000.parquet:0", "second": 2, "objects": [], "people": 0}
+{"video": "damaged-00000.parquet:0", "second": 3, "objects": [], "people": 0}
+{"video": "damaged-00000.parquet:0", "second": 4, "objects": [], "people": 0}
+{"video": "damaged-00000.parquet:0", "second": 5, "objects": [], "people": 0}
+{"video": "damaged-00000.parquet:0", "second": 6, "objects": [], "people": 0}
+{"video": "damaged-00000.parquet:0", "second": 7, "objects": [], "people": 0}
+{"video": "damaged-00000.parquet:0", "second": 8, "objects": [], "people": 0}
+{"video": "damaged-00000.parquet:0", "second": 9, "objects": ["person"], "people": 1}

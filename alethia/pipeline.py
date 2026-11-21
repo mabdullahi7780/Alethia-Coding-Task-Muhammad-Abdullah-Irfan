@@ -57,6 +57,7 @@ class Options:
     lo: float = 0.2
     margin: tuple[float, float] = (0.3, 0.5)
     use_margin: bool = True
+    people_rule: str = "all-equal"  # or "majority"
     dump_frames: str | None = None  # write per-frame detections here (for offline tuning)
     max_seconds: float = 0  # evaluation only: stop each video after this many seconds
     videos_per_file: int = 0  # evaluation only: first N videos of each Parquet file
@@ -195,10 +196,11 @@ def _gpu_loop(g, device, opts, in_q, free_qs, shm_info, part_path, done_path, ct
         floor = opts.margin[0]
     else:
         floor = 0.4  # exactly what model.predict(conf=0.4) runs
-    det = Detector(opts.weights, device=device, half=opts.half, conf_floor=floor, margin=opts.margin)
+    half = opts.half and str(device).startswith("cuda")  # FP16 only on CUDA; FP32 elsewhere
+    det = Detector(opts.weights, device=device, half=half, conf_floor=floor, margin=opts.margin)
     shms = {w: shared_memory.SharedMemory(name=name) for w, (name, _) in shm_info.items()}
     bufs = {w: np.ndarray((n, SLOT_BYTES), np.uint8, shms[w].buf) for w, (_, n) in shm_info.items()}
-    ctrl_q.put(("ready", g, det.device))
+    ctrl_q.put(("ready", g, f"{det.device} {'fp16' if det.fp16 else 'fp32'}"))
 
     part = open(part_path, "a")
     done = open(done_path, "a")
@@ -259,7 +261,8 @@ def _gpu_loop(g, device, opts, in_q, free_qs, shm_info, part_path, done_path, ct
 
     def resolve(s: Second):
         if s.stage == "sample":
-            decision = adaptive_decision([s.dets[i] for i in s.samples], opts.hi, opts.lo, opts.use_margin)
+            decision = adaptive_decision([s.dets[i] for i in s.samples], opts.hi, opts.lo, opts.use_margin,
+                                         opts.people_rule)
             if decision is not None:
                 st["decided_from_samples"] += 1
                 finalize(s, decision)
@@ -357,7 +360,7 @@ def _gpu_loop(g, device, opts, in_q, free_qs, shm_info, part_path, done_path, ct
             wid, gen, slot, _, _ = s.frames[i]
             free_qs[wid].put((gen, slot))  # pixels no longer needed: free the slot right away
             if dump is not None:
-                s.raw[i] = [[CLASS_TO_BIT[int(c)], round(float(p), 3)]
+                s.raw[i] = [[CLASS_TO_BIT[int(c)], round(float(p), 6)]
                             for p, c in r[:, 4:6].tolist() if int(c) in CLASS_TO_BIT]
             s.pending -= 1
         for s in {id(s): s for s, _ in items}.values():
@@ -526,7 +529,7 @@ def run(opts: Options) -> int:
 
     log(f"mode={opts.mode} devices={devices} workers={n_workers} batch={opts.batch} files={len(files)}"
         + (f" samples={opts.samples} hi={opts.hi} lo={opts.lo} margin={opts.margin if opts.use_margin else 'off'}"
-           if opts.mode == "skip" else ""))
+           f" people={opts.people_rule}" if opts.mode == "skip" else "") + (" half" if opts.half else ""))
 
     ctx = mp.get_context("spawn")
     task_q = ctx.Queue(maxsize=max(4, 2 * n_workers))
@@ -636,6 +639,9 @@ def run(opts: Options) -> int:
     stats = {}
     for f in sorted(parts_dir.glob("*.stats.json")):
         stats[f.name.split(".")[0]] = json.loads(f.read_text())
+    import shutil
+
+    shutil.rmtree(parts_dir, ignore_errors=True)  # merged into the output; only needed for resuming
     wall = time.time() - t0
     summary = {"mode": opts.mode, "wall_s": round(wall, 1), "lines": n_lines, "workers": n_workers,
                "devices": devices, "gpu": stats, "options": {k: v for k, v in vars(opts).items()}}

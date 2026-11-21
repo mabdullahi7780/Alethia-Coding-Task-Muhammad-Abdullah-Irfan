@@ -12,6 +12,7 @@ adaptive_decision() is the skip mode's early decision from K sampled frames.
 
 from __future__ import annotations
 
+from collections import Counter
 from typing import NamedTuple, Sequence
 
 # Object names exactly as written in section 1 of the brief, with their COCO class ids.
@@ -64,22 +65,34 @@ def sample_indices(n: int, k: int) -> list[int]:
 
 
 def adaptive_decision(
-    samples: Sequence[FrameDet], hi: float = 0.8, lo: float = 0.2, use_margin: bool = True
+    samples: Sequence[FrameDet], hi: float = 0.8, lo: float = 0.2, use_margin: bool = True,
+    people_rule: str = "all-equal",
 ) -> tuple[list[str], int] | None:
     """Decide a second from its sampled frames, or return None when it is borderline.
 
     Decided only if every class is clear-cut (seen in >= hi of samples, or in <= lo of them),
-    every sample has the same people count, and (with use_margin) no sampled detection is near
-    the 0.4 cutoff. Otherwise the caller runs the model on the rest of the second's frames.
+    the people count is clear-cut, and (with use_margin) no sampled detection is near the 0.4
+    cutoff. Otherwise the caller runs the model on the rest of the second's frames.
+
+    people_rule "all-equal": every sample must have the same people count.
+    people_rule "majority":  the most common count must appear in at least `hi` of the samples
+                             (K=5, hi=0.8: in 4 or 5 of them); that count is the answer.
     """
     k = len(samples)
     if k == 0:
         return [], 0
     if use_margin and any(f.near for f in samples):
         return None
-    people = samples[0].people
-    if any(f.people != people for f in samples):
-        return None
+    counts = Counter(f.people for f in samples)
+    people, top = counts.most_common(1)[0]
+    if people_rule == "all-equal":
+        if top != k:
+            return None
+    elif people_rule == "majority":
+        if top / k < hi:
+            return None
+    else:
+        raise ValueError(f"unknown people_rule {people_rule!r}")
     mask = 0
     for i in range(len(NAMES)):
         frac = sum(f.mask >> i & 1 for f in samples) / k

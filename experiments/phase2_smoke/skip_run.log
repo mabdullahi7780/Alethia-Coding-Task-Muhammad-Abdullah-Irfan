@@ -1,0 +1,10 @@
+[03:41:26] mode=skip devices=['cuda:0', 'cuda:1'] workers=2 batch=32 files=1 samples=5 hi=0.8 lo=0.2 margin=(0.3, 0.5)
+[03:41:30] gpu1 ready on cuda:1
+[03:41:30] gpu0 ready on cuda:0
+[03:41:45] gpu1      15s | videos 1 | video-seconds 43 (2.9/s) | frames inferred 623 (41/s) | escalated 23/47 | idle 0s | infer 12s
+[03:41:46] gpu0      15s | videos 1 | video-seconds 52 (3.4/s) | frames inferred 640 (42/s) | escalated 16/53 | idle 0s | infer 12s
+[03:42:01] gpu0      31s | videos 3 | video-seconds 103 (3.4/s) | frames inferred 1426 (47/s) | escalated 38/106 | idle 0s | infer 27s
+[03:42:01] gpu1      31s | videos 2 | video-seconds 76 (2.5/s) | frames inferred 1316 (43/s) | escalated 45/79 | idle 0s | infer 28s
+[03:42:10] gpu1 FINAL      40s | videos 3 | video-seconds 90 (2.2/s) | frames inferred 1617 (40/s) | escalated 54/90 | idle 0s | infer 36s
+[03:42:11] gpu0 FINAL      41s | videos 5 | video-seconds 150 (3.7/s) | frames inferred 1930 (47/s) | escalated 51/150 | idle 0s | infer 37s
+[03:42:12] done: 240 lines in 48.1s -> /kaggle/working/smoke/skip.jsonl

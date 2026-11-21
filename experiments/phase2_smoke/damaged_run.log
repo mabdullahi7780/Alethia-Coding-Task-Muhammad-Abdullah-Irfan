@@ -1,0 +1,6 @@
+[03:39:52] mode=full devices=['cuda:0', 'cuda:1'] workers=2 batch=32 files=1
+[03:39:56] gpu0 ready on cuda:0
+[03:39:56] gpu1 ready on cuda:1
+[03:40:01] gpu1 FINAL       5s | videos 1 | video-seconds 10 (2.0/s) | frames inferred 240 (48/s) | escalated 0/0 | idle 0s | infer 4s
+[03:40:03] gpu0 FINAL       6s | videos 3 | video-seconds 10 (1.5/s) | frames inferred 300 (46/s) | escalated 0/0 | idle 0s | infer 6s
+[03:40:04] done: 22 lines in 13.7s -> /kaggle/working/smoke/damaged.jsonl

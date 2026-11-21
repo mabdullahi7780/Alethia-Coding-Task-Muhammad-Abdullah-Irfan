@@ -92,3 +92,30 @@ def test_near_cutoff_confidence_escalates_only_with_margin():
 def test_all_agree_everything():
     s = [F(2, PERSON | LAPTOP)] * 5
     assert adaptive_decision(s) == (["person", "laptop"], 2)
+
+
+# ---------------------------------------------------------------- majority people rule (option 3)
+def test_majority_people_rule():
+    s = [F(2, PERSON)] * 4 + [F(3, PERSON)]  # 4 of 5 agree on 2
+    assert adaptive_decision(s, use_margin=False, people_rule="majority") == (["person"], 2)
+    assert adaptive_decision(s, use_margin=False, people_rule="all-equal") is None
+    s = [F(2, PERSON)] * 3 + [F(3, PERSON)] * 2  # only 3 of 5 agree: borderline
+    assert adaptive_decision(s, use_margin=False, people_rule="majority") is None
+
+
+def test_sweep_simulates_the_same_rule():
+    """tools/sweep.py chose option 3; its simulated decision must equal the one run.py makes."""
+    import itertools
+    import random
+
+    from tools.sweep import decide
+
+    rng = random.Random(0)
+    for _ in range(3000):
+        k = rng.choice([3, 4, 5, 6, 8])
+        samples = [F(rng.choice([0, 0, 1, 2, 3]), rng.randrange(32), rng.random() < 0.1) for _ in range(k)]
+        for (hi, lo), margin, rule in itertools.product([(1.0, 0.0), (0.8, 0.2), (0.6, 0.4)], [True, False],
+                                                       ["all-equal", "majority"]):
+            ours = adaptive_decision(samples, hi, lo, margin, rule)
+            sim, _ = decide(samples, hi, lo, margin, rule)
+            assert ours == sim, (samples, hi, lo, margin, rule)

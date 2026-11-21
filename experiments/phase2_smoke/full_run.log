@@ -1,0 +1,14 @@
+[03:40:06] mode=full devices=['cuda:0', 'cuda:1'] workers=2 batch=32 files=1
+[03:40:10] gpu0 ready on cuda:0
+[03:40:10] gpu1 ready on cuda:1
+[03:40:26] gpu1      15s | videos 0 | video-seconds 22 (1.4/s) | frames inferred 670 (44/s) | escalated 0/0 | idle 0s | infer 12s
+[03:40:26] gpu0      15s | videos 0 | video-seconds 27 (1.8/s) | frames inferred 664 (43/s) | escalated 0/0 | idle 0s | infer 13s
+[03:40:41] gpu1      30s | videos 1 | video-seconds 49 (1.6/s) | frames inferred 1470 (48/s) | escalated 0/0 | idle 0s | infer 27s
+[03:40:41] gpu0      31s | videos 1 | video-seconds 59 (1.9/s) | frames inferred 1464 (47/s) | escalated 0/0 | idle 0s | infer 28s
+[03:40:56] gpu1      46s | videos 1 | video-seconds 72 (1.6/s) | frames inferred 2180 (47/s) | escalated 0/0 | idle 0s | infer 43s
+[03:40:57] gpu0      46s | videos 1 | video-seconds 86 (1.9/s) | frames inferred 2274 (49/s) | escalated 0/0 | idle 0s | infer 43s
+[03:41:12] gpu0      62s | videos 3 | video-seconds 117 (1.9/s) | frames inferred 3068 (50/s) | escalated 0/0 | idle 0s | infer 58s
+[03:41:12] gpu1      62s | videos 3 | video-seconds 96 (1.6/s) | frames inferred 2850 (46/s) | escalated 0/0 | idle 0s | infer 58s
+[03:41:20] gpu0 FINAL      70s | videos 4 | video-seconds 120 (1.7/s) | frames inferred 3120 (45/s) | escalated 0/0 | idle 0s | infer 59s
+[03:41:23] gpu1 FINAL      72s | videos 4 | video-seconds 120 (1.7/s) | frames inferred 3414 (47/s) | escalated 0/0 | idle 0s | infer 69s
+[03:41:23] done: 240 lines in 79.6s -> /kaggle/working/smoke/full.jsonl

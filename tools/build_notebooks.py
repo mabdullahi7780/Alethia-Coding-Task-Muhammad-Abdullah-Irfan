@@ -61,21 +61,23 @@ DATA_DIR = "/tmp/finevideo"  # Parquet files live here, never in /kaggle/working
 
 
 def run(cmd, cwd=None, check=True, log=None, env=None):
-    """Run a command, print it, optionally tee its output to a log file in OUT_DIR."""
+    """Run a command, streaming its output live; with log=..., also save it to OUT_DIR/log."""
     print("$", " ".join(cmd), flush=True)
     t0 = time.perf_counter()
-    if log is None:
-        res = subprocess.run(cmd, cwd=cwd, env=env)
-    else:
-        res = subprocess.run(cmd, cwd=cwd, env=env, capture_output=True, text=True)
-        text = res.stdout + res.stderr
-        with open(f"{OUT_DIR}/{log}", "w") as fh:
-            fh.write(text)
-        print("\n".join(text.splitlines()[-25:]))
-    print(f"[exit {res.returncode}, {time.perf_counter() - t0:.1f}s]", flush=True)
-    if check and res.returncode != 0:
+    proc = subprocess.Popen(cmd, cwd=cwd, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                            text=True, bufsize=1)
+    fh = open(f"{OUT_DIR}/{log}", "w") if log else None
+    for line in proc.stdout:
+        print(line, end="", flush=True)
+        if fh:
+            fh.write(line)
+    proc.wait()
+    if fh:
+        fh.close()
+    print(f"[exit {proc.returncode}, {time.perf_counter() - t0:.1f}s]", flush=True)
+    if check and proc.returncode != 0:
         raise RuntimeError(f"command failed: {cmd}")
-    return res
+    return proc
 
 
 if not os.path.isdir(REPO_DIR):

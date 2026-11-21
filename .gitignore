@@ -1,0 +1,17 @@
+# secrets
+.env
+*.env
+# data, weights, outputs (results.jsonl.gz and ai_chats/ are committed on purpose)
+data/
+*.parquet
+*.pt
+*.engine
+*.onnx
+outputs/
+results.jsonl
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.DS_Store

@@ -1,0 +1,18 @@
+Creating new Ultralytics Settings v0.0.8 file ✅ 
+View Ultralytics Settings with 'yolo settings' or at '/root/.config/Ultralytics/settings.json'
+Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/usage/settings
+
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11l.pt to 'yolo11l.pt': 1% ──────────── 802.9KB/49.0MB 7.5MB/s 0.1s<6.4s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11l.pt to 'yolo11l.pt': 4% ╸─────────── 2.1/49.0MB 12.9MB/s 0.2s<3.6s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11l.pt to 'yolo11l.pt': 8% ╸─────────── 4.1/49.0MB 19.4MB/s 0.3s<2.3s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11l.pt to 'yolo11l.pt': 14% ━╸────────── 7.1/49.0MB 29.8MB/s 0.4s<1.4s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11l.pt to 'yolo11l.pt': 23% ━━╸───────── 11.5/49.0MB 44.0MB/s 0.5s<0.9s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11l.pt to 'yolo11l.pt': 37% ━━━━──────── 18.4/49.0MB 68.8MB/s 0.6s<0.4s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11l.pt to 'yolo11l.pt': 57% ━━━━━━╸───── 28.1/49.0MB 97.0MB/s 0.7s<0.2s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11l.pt to 'yolo11l.pt': 82% ━━━━━━━━━╸── 40.3/49.0MB 122.1MB/s 0.8s<0.1s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11l.pt to 'yolo11l.pt': 100% ━━━━━━━━━━━━ 49.0MB 57.1MB/s 0.9s
+weights: /tmp/alethia/yolo11l.pt sha256 9ebd0e09d59811db4b1d61e2bc6730649608b1ac47f8dd01e2da6bca7c20023f
+torch 2.14.1+cu126 (CUDA 12.6); CUDA available: True
+cuda:0 Tesla T4
+cuda:1 Tesla T4
+model loads and runs on cuda:0 (FP16): ready

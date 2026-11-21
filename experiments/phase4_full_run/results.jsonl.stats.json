@@ -1,0 +1,67 @@
+{
+  "mode": "skip",
+  "wall_s": 21496.7,
+  "lines": 461757,
+  "workers": 2,
+  "devices": [
+    "cuda:0",
+    "cuda:1"
+  ],
+  "gpu": {
+    "gpu0": {
+      "frames": 1962753,
+      "batches": 197471,
+      "seconds": 235103,
+      "sampled_seconds": 234936,
+      "escalated_seconds": 33839,
+      "videos": 856,
+      "errors": 0,
+      "idle_s": 3707.4600922216123,
+      "infer_s": 17272.334992527958,
+      "decided_from_samples": 201097,
+      "wall_s": 21485.171931505203,
+      "device": "cuda:0"
+    },
+    "gpu1": {
+      "frames": 1992785,
+      "batches": 190731,
+      "seconds": 226654,
+      "sampled_seconds": 226495,
+      "escalated_seconds": 36945,
+      "videos": 794,
+      "errors": 0,
+      "idle_s": 3490.5524475014236,
+      "infer_s": 17478.319892883395,
+      "decided_from_samples": 189550,
+      "wall_s": 21485.135944604874,
+      "device": "cuda:1"
+    }
+  },
+  "options": {
+    "input": "/tmp/finevideo/data",
+    "output": "/kaggle/working/full/results.jsonl",
+    "mode": "skip",
+    "weights": "/tmp/alethia/yolo11l.pt",
+    "device": null,
+    "half": true,
+    "workers": 0,
+    "batch": 32,
+    "slots": 160,
+    "decode_threads": 1,
+    "samples": 5,
+    "hi": 0.8,
+    "lo": 0.2,
+    "margin": [
+      0.3,
+      0.5
+    ],
+    "use_margin": false,
+    "people_rule": "majority",
+    "dump_frames": null,
+    "max_seconds": 0,
+    "videos_per_file": 0,
+    "hang_seconds": 300,
+    "stats_every": 300.0,
+    "quiet": false
+  }
+}

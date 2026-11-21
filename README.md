@@ -75,10 +75,13 @@ Against our every-frame FP32 reference on 96 videos (12 files, 60 s each, 5,543 
 | every frame, FP32 (reference) | 1 | 100% | 100% | 27.8 | 3.34 |
 | every frame, FP16 | 0.9999 | 99.82% | 100% | 27.8 | 8.21 |
 | adaptive sampling (first settings), FP16 | 1.0000 | 99.86% | 100% | 12.5 | 16.05 |
+| **`run.py`** (adaptive sampling, final settings), FP16 | 0.9993 | 99.78% | 100% | 8.6 | |
 
 `run.py` uses cheaper settings chosen with `tools/sweep.py` (no confidence-margin check, people
-majority rule); the full-run notebook re-validates them before the 50-file run. The 50-file results
-are in `results.jsonl.gz`; where and how fast they were produced is in `HARDWARE.md`.
+majority rule); the last row is the full-run notebook re-validating them on the same 96 videos
+(`experiments/phase4_full_run/`). The 50-file run (1,650 videos, 128 h of video) took 5 h 58 min on
+the 2x T4 machine at 21.5 video-seconds per second, with no error lines; the results are in
+`results.jsonl.gz`, and the machine and timings are in `HARDWARE.md`.
 
 ## Repository
 
@@ -91,7 +94,7 @@ are in `results.jsonl.gz`; where and how fast they were produced is in `HARDWARE
 | `tests/` | unit tests (rules, decoding, letterbox) and the `predict()` equivalence test |
 | `tools/` | `check_results.py` (format), `eval.py` (scores vs a reference), `sweep.py` (offline tuning), `inspect_videos.py`, `build_notebooks.py` |
 | `kaggle/` | the Kaggle notebooks used (smoke test, comparison, full run) |
-| `experiments/` | outputs of the smoke test and the comparison run |
+| `experiments/` | outputs of the smoke test, the comparison run and the 50-file run |
 | `results.jsonl.gz`, `HARDWARE.md`, `WRITEUP.md`, `ai_chats/` | submission files |
 
 Tests: `pytest tests/` (the equivalence test needs `ALETHIA_TEST_PARQUET` pointing at a FineVideo

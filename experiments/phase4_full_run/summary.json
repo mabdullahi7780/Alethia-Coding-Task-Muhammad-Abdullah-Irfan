@@ -1,0 +1,91 @@
+{
+  "env": {
+    "commit": "3018200666ee1a2722f93ef096cdba0aad0d8173",
+    "python": "3.13.16",
+    "torch": "2.14.1+cu126",
+    "cuda": "12.6",
+    "ultralytics": "8.4.216",
+    "av": "18.1.0",
+    "gpus": [
+      "Tesla T4",
+      "Tesla T4"
+    ],
+    "gpu_mem_gb": [
+      14.6,
+      14.6
+    ],
+    "cpu_model": "Intel(R) Xeon(R) CPU @ 2.00GHz",
+    "cpu_count": 4,
+    "ram_gb": 31.3,
+    "disk_free_gb": {
+      "/kaggle/working": 19.5,
+      "/tmp": 2506.3
+    },
+    "disk_type": "NAME  ROTA  SIZE MODEL\nloop0    0    1G \nloop1    0   96G \nloop2    0   20G \nsda      0  128G PersistentDisk  \nsdb      0    8T PersistentDisk",
+    "os": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\""
+  },
+  "download_s": 109,
+  "data_gib": 23.1,
+  "videos": 1650,
+  "full_run_s": 21497,
+  "full_run_h": 5.97,
+  "lines": 461757,
+  "video_seconds": 461757,
+  "frames_inferred": 3955538,
+  "frames_per_video_second": 8.57,
+  "escalated_seconds": 70784,
+  "sampled_seconds": 461431,
+  "gpu_idle_s": [
+    3707,
+    3491
+  ],
+  "gpu_infer_s": [
+    17272,
+    17478
+  ],
+  "error_videos": 0,
+  "errors": [],
+  "validation": {
+    "seconds": 5543,
+    "object_f1": 0.99927,
+    "object_tp_fp_fn": [
+      4079,
+      3,
+      3
+    ],
+    "people_exact": 0.99784,
+    "people_within1": 1.0,
+    "missing_seconds": 0,
+    "extra_seconds": 0,
+    "worst_videos_people_exact": [
+      {
+        "video": "train-00032-of-01357.parquet:5",
+        "exact": 0.9667,
+        "seconds": 60
+      },
+      {
+        "video": "train-00044-of-01357.parquet:1",
+        "exact": 0.9667,
+        "seconds": 60
+      },
+      {
+        "video": "train-00000-of-01357.parquet:5",
+        "exact": 0.9714,
+        "seconds": 35
+      },
+      {
+        "video": "train-00016-of-01357.parquet:1",
+        "exact": 0.9833,
+        "seconds": 60
+      },
+      {
+        "video": "train-00020-of-01357.parquet:1",
+        "exact": 0.9833,
+        "seconds": 60
+      }
+    ],
+    "error_videos_ref": 0,
+    "error_videos_pred": 0
+  },
+  "results_gz_mb": 1.3
+}

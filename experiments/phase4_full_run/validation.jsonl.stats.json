@@ -1,0 +1,67 @@
+{
+  "mode": "skip",
+  "wall_s": 368.4,
+  "lines": 5543,
+  "workers": 2,
+  "devices": [
+    "cuda:0",
+    "cuda:1"
+  ],
+  "gpu": {
+    "gpu0": {
+      "frames": 25345,
+      "batches": 2369,
+      "seconds": 2888,
+      "sampled_seconds": 2888,
+      "escalated_seconds": 472,
+      "videos": 49,
+      "errors": 0,
+      "idle_s": 37.871686959997646,
+      "infer_s": 306.530457737005,
+      "decided_from_samples": 2416,
+      "wall_s": 357.4045593738556,
+      "device": "cuda:0"
+    },
+    "gpu1": {
+      "frames": 21401,
+      "batches": 2283,
+      "seconds": 2655,
+      "sampled_seconds": 2654,
+      "escalated_seconds": 354,
+      "videos": 47,
+      "errors": 0,
+      "idle_s": 45.49444354000036,
+      "infer_s": 301.9828962230014,
+      "decided_from_samples": 2300,
+      "wall_s": 357.4314455986023,
+      "device": "cuda:1"
+    }
+  },
+  "options": {
+    "input": "/tmp/validation",
+    "output": "/kaggle/working/full/validation.jsonl",
+    "mode": "skip",
+    "weights": "/tmp/alethia/yolo11l.pt",
+    "device": null,
+    "half": true,
+    "workers": 0,
+    "batch": 32,
+    "slots": 160,
+    "decode_threads": 1,
+    "samples": 5,
+    "hi": 0.8,
+    "lo": 0.2,
+    "margin": [
+      0.3,
+      0.5
+    ],
+    "use_margin": false,
+    "people_rule": "majority",
+    "dump_frames": null,
+    "max_seconds": 60.0,
+    "videos_per_file": 8,
+    "hang_seconds": 300,
+    "stats_every": 60,
+    "quiet": false
+  }
+}

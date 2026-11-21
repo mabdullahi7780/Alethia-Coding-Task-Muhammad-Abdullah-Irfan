@@ -259,9 +259,111 @@ json.dump(summary, open(f"{OUT_DIR}/summary.json", "w"), indent=2)
     ])
 
 
+# ---------------------------------------------------------------- compare.ipynb
+COMPARE_FILES = [f"data/train-{i:05d}-of-01357.parquet" for i in range(0, 48, 4)]  # 12 files spread over the 50
+TOTAL_VIDEO_SECONDS = 457_200  # ~127 h in the 50 files (file 0 has 2.54 h; brief says ~125 h)
+
+
+def compare() -> dict:
+    return notebook([
+        md('''
+# Athletia Phase 3: every frame vs adaptive sampling, FP32 vs FP16
+
+Subset: the first 8 videos of 12 Parquet files spread across the 50 (`train-00000`, `-00004`, ... `-00044`),
+first 60 seconds of each (about 96 videos, 5,760 video-seconds). Three runs on both T4s, one after another:
+
+1. `run_full.py` FP32 with `--dump-frames`: the reference (the brief's rule on every frame, identical to `predict()`)
+2. `run_full.py --half`: FP16 speed, and its agreement with the FP32 reference
+3. `run_skip.py --half`: adaptive sampling (K=5, 80/20, margin 0.30-0.50) speed and agreement
+
+Then, on CPU: `tools/sweep.py` replays the skip rule from the FP32 per-frame detections for 90 settings.
+Expected GPU time: about 50 minutes.
+
+**Settings:** Accelerator GPU T4 x2, Internet on, Add-ons > Secrets > `HF_TOKEN` attached.
+Run with **Save Version, Save & Run All**, then download `compare_outputs.zip` from the version's Output tab.
+'''),
+        code('''
+OUT_DIR = "/kaggle/working/compare"
+ARCHIVE_NAME = "compare_outputs"
+'''),
+        code(SETUP),
+        code(ENV),
+        code(HF_TOKEN),
+        code(f'''
+from huggingface_hub import hf_hub_download
+from ultralytics import YOLO
+
+FILES = {COMPARE_FILES!r}
+TOTAL_VIDEO_SECONDS = {TOTAL_VIDEO_SECONDS}
+t0 = time.perf_counter()
+for f in FILES:
+    hf_hub_download("HuggingFaceFV/finevideo", f, repo_type="dataset", local_dir=DATA_DIR)
+INPUT = os.path.join(DATA_DIR, "data")
+print(len(os.listdir(INPUT)), "files,", round(sum(os.path.getsize(os.path.join(INPUT, x)) for x in os.listdir(INPUT)) / 2**30, 2),
+      "GiB in", round(time.perf_counter() - t0), "s")
+YOLO("yolo11l.pt")  # official weights into the repo folder
+WEIGHTS = os.path.join(REPO_DIR, "yolo11l.pt")
+'''),
+        md("## Runs"),
+        code(r'''
+SUBSET = ["--input", INPUT, "--weights", WEIGHTS, "--videos-per-file", "8", "--max-seconds", "60", "--stats-every", "60"]
+RUNS = {
+    "full32": ["run_full.py", "--dump-frames", f"{OUT_DIR}/full32.frames"],
+    "full16": ["run_full.py", "--half"],
+    "skip16": ["run_skip.py", "--half"],
+}
+timing = {}
+for name, args in RUNS.items():
+    t0 = time.perf_counter()
+    run([sys.executable, args[0], *args[1:], "--output", f"{OUT_DIR}/{name}.jsonl", *SUBSET], log=f"{name}_run.log")
+    timing[name] = round(time.perf_counter() - t0, 1)
+    run([sys.executable, "tools/check_results.py", f"{OUT_DIR}/{name}.jsonl"], log=f"{name}_check.log", check=False)
+print(timing)
+'''),
+        md("## Accuracy against the FP32 every-frame reference"),
+        code(r'''
+pairs = {"full16_vs_full32": ("full32", "full16"), "skip16_vs_full32": ("full32", "skip16"),
+         "skip16_vs_full16": ("full16", "skip16")}
+for name, (ref, pred) in pairs.items():
+    run([sys.executable, "tools/eval.py", "--ref", f"{OUT_DIR}/{ref}.jsonl", "--pred", f"{OUT_DIR}/{pred}.jsonl",
+         "--json", f"{OUT_DIR}/{name}.json"], log=f"{name}.log")
+'''),
+        md("## Offline sweep of skip settings (CPU only)"),
+        code(r'''
+run([sys.executable, "tools/sweep.py", "--dump", f"{OUT_DIR}/full32.frames", "--ref", f"{OUT_DIR}/full32.jsonl",
+     "--out", f"{OUT_DIR}/sweep.csv"], log="sweep.log")
+'''),
+        md("## Summary"),
+        code(r'''
+summary = {"timing_s": timing}
+for name in RUNS:
+    st = json.load(open(f"{OUT_DIR}/{name}.jsonl.stats.json"))
+    gpus = list(st["gpu"].values())
+    frames = sum(g["frames"] for g in gpus)
+    secs = sum(g["seconds"] for g in gpus)
+    rate = secs / st["wall_s"]
+    summary[name] = {
+        "wall_s": st["wall_s"], "video_seconds": secs, "frames_inferred": frames,
+        "frames_per_video_second": round(frames / max(secs, 1), 2),
+        "video_seconds_per_s": round(rate, 2),
+        "projected_50_files_h_2xT4": round(TOTAL_VIDEO_SECONDS / rate / 3600, 1),
+        "gpu_idle_s": [round(g["idle_s"], 1) for g in gpus], "gpu_infer_s": [round(g["infer_s"], 1) for g in gpus],
+        "escalated": sum(g["escalated_seconds"] for g in gpus), "sampled": sum(g["sampled_seconds"] for g in gpus),
+    }
+for name in pairs:
+    r = json.load(open(f"{OUT_DIR}/{name}.json"))
+    summary[name] = {k: r[k] for k in ["seconds", "object_f1", "people_exact", "people_within1", "missing_seconds",
+                                       "worst_videos_people_exact"]}
+print(json.dumps(summary, indent=2))
+json.dump(summary, open(f"{OUT_DIR}/summary.json", "w"), indent=2)
+'''),
+        code(ARCHIVE),
+    ])
+
+
 def main() -> None:
     KAGGLE_DIR.mkdir(parents=True, exist_ok=True)
-    for name, build in {"smoke.ipynb": smoke}.items():
+    for name, build in {"smoke.ipynb": smoke, "compare.ipynb": compare}.items():
         out = KAGGLE_DIR / name
         out.write_text(json.dumps(build(), indent=1) + "\n")
         print("wrote", out)
